@@ -6,22 +6,22 @@
       <legend>拇指哥学生录入系统</legend>
       <div>
         <span>姓名：</span>
-        <input type="text" placeholder="请输入姓名">
+        <input type="text" placeholder="请输入姓名" v-model="person.name">
       </div>
       <div>
         <span>年龄：</span>
-        <input type="text" placeholder="请输入年龄">
+        <input type="text" placeholder="请输入年龄" v-model="person.age">
       </div>
       <div>
         <span>性别：</span>
-        <select name id>
+        <select v-model="person.sex">
           <option value="男">男</option>
           <option value="女">女</option>
         </select>
       </div>
       <div>
         <span>电话：</span>
-        <input type="text" placeholder="请输入电话">
+        <input type="text" placeholder="请输入电话" v-model="person.phone">
       </div>
 
       <button type="button" @click="save()">创建新用户</button>
@@ -44,7 +44,7 @@
           <td> {{p.sex}} </td>
           <td> {{p.phone}} </td>
           <td>
-            <button>删除</button>
+            <button type="button" @click="deletePerson(index)">删除</button>
           </td>
         </tr>
       </tbody>
@@ -60,6 +60,7 @@ export default {
   name: "home",
   data() {
     return {
+      person:{},
       persons: [
         { name: "张三", age: 20, sex: "男", phone: "13812347890" },
         { name: "李四", age: 45, sex: "女", phone: "12364573214" },
@@ -71,7 +72,10 @@ export default {
   },
   methods:{
     save(){
-
+      this.persons.unshift(this.person);
+    },
+    deletePerson(index){
+      this.persons.splice(index, 1);
     }
   }
   // components: {

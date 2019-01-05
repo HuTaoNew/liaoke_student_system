@@ -6,6 +6,9 @@ import axios from 'axios'
 
 Vue.prototype.$axios = axios
 
+axios.defaults.baseURL = 'https://wd3862536764lzhyoq.wilddogio.com';
+
+
 Vue.config.productionTip = false
 
 new Vue({

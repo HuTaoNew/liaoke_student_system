@@ -87,12 +87,13 @@ export default {
         return;
       }
 
-      this.persons.unshift(this.person);
+      //this.persons.unshift(this.person);
       this.$axios
         .post("/person.json", this.person)
         .then(response => {
           if (response.status == 200) {
             this.person = { name: "", age: 0, sex: "男", phone: "" };
+            this.getDataFromWeb();
           }
         })
         .catch(error => {
@@ -100,31 +101,35 @@ export default {
         });
     },
     deletePerson(index) {
-      this.$axios.delete("/person/" + this.persons[index].id + ".json")
-      .then(response => {
-        console.log(response);
-        if (response.status == 200) {
-          this.persons.splice(index, 1);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
-
+      this.$axios
+        .delete("/person/" + this.persons[index].id + ".json")
+        .then(response => {
+          console.log(response);
+          if (response.status == 200) {
+            //this.persons.splice(index, 1);
+            this.getDataFromWeb();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getDataFromWeb() {
+      this.$axios
+        .get("/person.json")
+        .then(response => {
+          for (let key in response.data) {
+            response.data[key].id = key;
+          }
+          this.persons = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   mounted() {
-    this.$axios
-      .get("/person.json")
-      .then(response => {
-        for (let key in response.data) {
-          response.data[key].id = key;
-          this.persons.unshift(response.data[key]);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.getDataFromWeb();
   }
 
   // components: {
